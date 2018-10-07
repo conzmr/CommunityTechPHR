@@ -2,12 +2,11 @@
 import React from 'react'
 import {
   View,
-  Text,
-  Button,
   StyleSheet,
   AsyncStorage
 } from 'react-native'
 import {Navigation} from 'react-native-navigation';
+import { Container, Content, Button, Text } from 'native-base';
 
 export default class Home extends React.Component {
   static get options() {
@@ -16,15 +15,26 @@ export default class Home extends React.Component {
         title: {
           text: 'Identificación Médica'
         },
+        largeTitle: {
+          visible: true,
+          fontSize: 30,
+          fontWeight: 'bold',
+          color: 'black',
+          fontFamily: 'Helvetica'
+        }
       }
     };
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>MEDICAL ID.</Text>
-        <Button
+      <Container style={styles.container}>
+        <Text style={styles.infoText}>
+          Para comenzar a utilizar la aplicación debes crear
+          tu registro de identificación médica, el cual permitirá
+          dar seguimiento a tu tratamiento.
+        </Text>
+        <Button block style={styles.button}
           onPress={() => {
             Navigation.push(this.props.componentId, {
               component: {
@@ -32,9 +42,11 @@ export default class Home extends React.Component {
               }
             });
           }}
-          title="Crear registro médico"
-        />
-      </View>
+
+        >
+        <Text style={styles.buttonText} >Crear registro médico</Text>
+      </Button>
+      </Container>
     )
   }
 }
@@ -42,7 +54,20 @@ export default class Home extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'flex-start',
+    paddingVertical: 30,
+    paddingHorizontal: 15
+  },
+  infoText: {
+    fontSize: 17,
+    color: 'black'
+  },
+  button: {
+    marginTop: 40,
+    backgroundColor: '#00b3ae'
+    // backgroundColor: '#229691'
+  },
+  buttonText: {
+    fontWeight: 'bold'
   }
 })

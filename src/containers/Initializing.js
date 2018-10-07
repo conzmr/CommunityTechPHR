@@ -6,13 +6,14 @@ import {
   StyleSheet,
   AsyncStorage
 } from 'react-native'
-
+import SplashScreen from 'react-native-splash-screen';
 import { goRegistration, goHome } from '../navigation'
 
 import { USER_KEY } from '../config'
 
 export default class Initializing extends React.Component {
   async componentDidMount() {
+    SplashScreen.hide()
     try {
       const user = await AsyncStorage.getItem(USER_KEY)
       console.log('user: ', user)
@@ -30,7 +31,7 @@ export default class Initializing extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Loading</Text>
+        <Text style={styles.welcome}>Cargando...</Text>
       </View>
     )
   }

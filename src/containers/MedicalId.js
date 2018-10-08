@@ -5,7 +5,7 @@ import {
   StyleSheet,
   AsyncStorage
 } from 'react-native'
-import {Navigation} from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 import { Container, Content, Button, Text } from 'native-base';
 
 export default class Home extends React.Component {
@@ -36,9 +36,13 @@ export default class Home extends React.Component {
         </Text>
         <Button block style={styles.button}
           onPress={() => {
-            Navigation.push(this.props.componentId, {
-              component: {
-                name: 'SignUp',
+            Navigation.showModal({
+              stack: {
+                children: [{
+                  component: {
+                    name: 'SignUp'
+                  }
+                }]
               }
             });
           }}

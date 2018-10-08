@@ -27,12 +27,37 @@ import {
   ListItem,
   Separator
  } from 'native-base';
-import { goHome } from '../navigation'
+import { goHome } from '../navigation';
+import { Navigation } from 'react-native-navigation';
 
 export default class SignUp extends Component {
+  static options(passProps) {
+    return {
+      topBar: {
+        title: {
+          text: 'Documento clínico'
+        },
+        leftButtons: [
+          {
+            id: 'buttonCancel',
+            text: 'Cancelar',
+            color: '#00b3ae'
+          }
+        ],
+        rightButtons: [
+          {
+            id: 'buttonSave',
+            text: 'Guardar',
+            color: '#00b3ae'
+          }
+        ]
+      }
+    }
+  }
   constructor(props) {
     super(props);
     this.onValueChange = this.onValueChange.bind(this);
+    Navigation.events().bindComponent(this);
     this.state = {
       gender: undefined,
       amputationType: undefined,
@@ -77,6 +102,11 @@ export default class SignUp extends Component {
       console.log('error signing up: ', err)
     }
   }
+
+  navigationButtonPressed({ buttonId }) {
+    Navigation.dismissModal(this.props.componentId);
+  }
+
 
   render() {
     return (

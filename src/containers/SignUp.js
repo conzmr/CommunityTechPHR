@@ -105,6 +105,9 @@ export default class SignUp extends Component {
 
   navigationButtonPressed({ buttonId }) {
     Navigation.dismissModal(this.props.componentId);
+    if(buttonId == "buttonSave"){
+      return this.signUp();
+    }
   }
 
 

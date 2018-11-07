@@ -3,13 +3,32 @@ import React from 'react'
 import {
   View,
   StyleSheet,
-  AsyncStorage
+  AsyncStorage,
+  Button
 } from 'react-native'
 import { Navigation } from 'react-native-navigation';
-import { Container, Content, Button, Text } from 'native-base';
+import {
+  Container,
+  Header,
+  Content,
+  Form,
+  Item,
+  Input,
+  Label,
+  Text,
+  Left,
+  Body,
+  Right,
+  Title
+} from 'native-base';
 
-export default class Home extends React.Component {
-  static get options() {
+export default class MedicalId extends React.Component {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this); // <== Will be automatically unregistered when unmounted
+  }
+
+  static options(passProps) {
     return {
       topBar: {
         title: {
@@ -26,33 +45,55 @@ export default class Home extends React.Component {
     };
   }
 
-  render() {
-    return (
-      <Container style={styles.container}>
-        <Text style={styles.infoText}>
-          Para comenzar a utilizar la aplicación debes crear
-          tu registro de identificación médica, el cual permitirá
-          dar seguimiento a tu tratamiento.
-        </Text>
-        <Button block style={styles.button}
-          onPress={() => {
-            Navigation.showModal({
-              stack: {
-                children: [{
-                  component: {
-                    name: 'SignUp'
-                  }
-                }]
-              }
-            });
-          }}
 
-        >
-        <Text style={styles.buttonText} >Crear registro médico</Text>
-      </Button>
+
+
+
+  render() {
+      return (
+        <Container>
+          <Header>
+            <Left/>
+           <Body>
+             <Text>ID Médico</Text>
+           </Body>
+           <Right>
+             <Button
+               title="Editar"
+               onPress={() => {
+                 Navigation.showModal({
+                   stack: {
+                     children: [{
+                       component: {
+                         name: 'SignUp'
+                       }
+                     }]
+                   }
+                 });
+               }}
+             />
+          </Right>
+         </Header>
+        <Content>
+          <Form>
+            <Item stackedLabel>
+              <Label>Nombre</Label>
+            </Item>
+            <Item stackedLabel>
+              <Label>Edad</Label>
+            </Item>
+            <Item stackedLabel>
+              <Label>Nombre</Label>
+            </Item>
+            <Item stackedLabel last>
+              <Label>Password</Label>
+              <Input />
+            </Item>
+          </Form>
+        </Content>
       </Container>
-    )
-  }
+      );
+    }
 }
 
 const styles = StyleSheet.create({

@@ -4,35 +4,58 @@ import {
   TextInput,
   StyleSheet,
   Switch,
-  Text,
-   Button
-} from 'react-native';
- import {
-   Container,
-   Header,
-   Content,
-   Form,
-   Item,
-   Input,
-   Label,
-   Picker,
-   Icon,
-   Left,
-   Subtitle,
-   Right,
-   Body,
-   Textarea,
-   Title,
-   DatePicker,
-   ListItem,
-   Separator,
-   Footer
-  } from 'native-base';
+  Text
+} from 'react-native'
+import {
+  Container,
+  Button,
+  Header,
+  Content,
+  Form,
+  Item,
+  Input,
+  Label,
+  Picker,
+  Icon,
+  Left,
+  Subtitle,
+  Right,
+  Body,
+  Textarea,
+  Title,
+  DatePicker,
+  ListItem,
+  Separator,
+  Footer
+ } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { goHome } from '../navigation';
 import { Navigation } from 'react-native-navigation';
 
-export default class Archive extends Component {
+export default class Therapies extends Component {
+  static options(passProps) {
+    return {
+      topBar: {
+        title: {
+          text: 'Terapias'
+        },
+        leftButtons: [
+          {
+            id: 'buttonCancel',
+            text: 'Cancelar',
+            color: '#00b3ae'
+          }
+        ],
+        rightButtons: [
+          {
+            id: 'buttonSave',
+            text: 'Guardar',
+            color: '#00b3ae'
+          }
+        ]
+      }
+    }
+  }
   constructor(props) {
     super(props);
     Navigation.events().bindComponent(this);
@@ -59,10 +82,8 @@ export default class Archive extends Component {
     this.setState({ [key]: val })
   }
   signUp = async () => {
-    const { username, password, email, phone_number } = this.state
     try {
-      goHome()
-      console.log('user successfully signed up!: ', success)
+      Navigation.dismissModal(this.props.componentId);
     } catch (err) {
       console.log('error signing up: ', err)
     }
@@ -79,28 +100,6 @@ export default class Archive extends Component {
   render() {
     return (
       <Container>
-        <Header span style={styles.backgroundHeader}>
-         <Body>
-           <Title style={styles.headerTitle}>Terapias</Title>
-         </Body>
-         <Right>
-           <Button
-             title="Editar"
-             color= '#00b3ae'
-             onPress={() => {
-               Navigation.showModal({
-                 stack: {
-                   children: [{
-                     component: {
-                       name: 'Therapies'
-                     }
-                   }]
-                 }
-               });
-             }}
-           />
-        </Right>
-       </Header>
         <Content>
           <Form>
             <ListItem itemHeader style={styles.divider}>
@@ -300,9 +299,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     width: '100%'
   },
-  headerTitle:{
-    fontSize: 30,
-    fontWeight: '400'
+  label: {
+    color: '#00B3AE',
+    fontWeight: '500'
+  },
+  divider: {
+    backgroundColor: '#F8F8F8'
+  },
+  dividerText: {
+    color:'#798d99'
   },
   content: {
     flex: 1,
@@ -316,18 +321,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start'
-  },
-  label: {
-    color: '#00B3AE',
-    fontWeight: '500'
-  },
-  divider: {
-    backgroundColor: '#F8F8F8'
-  },
-  dividerText: {
-    color:'#798d99'
-  },
-  backgroundHeader: {
-    backgroundColor: 'white'
   }
 })

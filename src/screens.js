@@ -8,6 +8,7 @@ import Initializing from './containers/Initializing';
 import Home from './containers/Home';
 import Exercises from './containers/Exercises';
 import Archive from './containers/Archive';
+import Therapies from './containers/Therapies';
 
 export function registerScreens() {
   Navigation.registerComponent('Home', () => Home);
@@ -17,4 +18,5 @@ export function registerScreens() {
   Navigation.registerComponent('CreateMedicalId', () => CreateMedicalId);
   Navigation.registerComponent('Exercises', () => Exercises);
   Navigation.registerComponent('Archive', () => Archive);
+  Navigation.registerComponent('Therapies', () => Therapies);
 }

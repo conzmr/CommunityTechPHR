@@ -119,7 +119,7 @@ export default class SignUp extends Component {
         <Content>
           <Form>
             <ListItem itemHeader style={styles.divider}>
-              <Text>DATOS GENERALES</Text>
+              <Text style={styles.dividerText}>DATOS GENERALES</Text>
             </ListItem>
             <ListItem >
               <Grid>
@@ -264,7 +264,7 @@ export default class SignUp extends Component {
 
 
             <ListItem itemHeader style={styles.divider}>
-              <Text>GLUCOSA</Text>
+              <Text style={styles.dividerText}>GLUCOSA</Text>
             </ListItem>
             <ListItem >
               <Grid>
@@ -305,7 +305,7 @@ export default class SignUp extends Component {
             </ListItem>
 
             <ListItem itemHeader style={styles.divider}>
-              <Text>DETALLES</Text>
+              <Text style={styles.dividerText}>DETALLES</Text>
             </ListItem>
             <ListItem >
               <Grid>
@@ -456,6 +456,9 @@ const styles = StyleSheet.create({
   },
   divider: {
     backgroundColor: '#F8F8F8'
+  },
+  dividerText: {
+    color:'#798d99'
   },
   content: {
     flex: 1,

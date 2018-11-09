@@ -23,8 +23,20 @@ export const goHome = () =>
             },
             {
               component: {
-                name: 'MedicalId',
+                name: 'Exercises',
                 options: {
+                  topBar: {
+                    title: {
+                      text: 'Monitoreo de ejercicios'
+                    },
+                    largeTitle: {
+                      visible: true,
+                      fontSize: 30,
+                      fontWeight: 'bold',
+                      color: 'black',
+                      fontFamily: 'Helvetica'
+                    }
+                  },
                   bottomTab: {
                     text: 'Ejercicios',
                     fontSize: 12,
@@ -35,10 +47,10 @@ export const goHome = () =>
             },
             {
               component: {
-                name: 'MedicalId',
+                name: 'Archive',
                 options: {
                   bottomTab: {
-                    text: 'Terapias',
+                    text: 'Archivo',
                     fontSize: 12,
                     icon: iconsMap['ios-archive']
                   }

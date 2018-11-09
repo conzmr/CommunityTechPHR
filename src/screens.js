@@ -6,6 +6,8 @@ import CreateMedicalId from './containers/CreateMedicalId';
 import SignUp from './containers/SignUp';
 import Initializing from './containers/Initializing';
 import Home from './containers/Home';
+import Exercises from './containers/Exercises';
+import Archive from './containers/Archive';
 
 export function registerScreens() {
   Navigation.registerComponent('Home', () => Home);
@@ -13,4 +15,6 @@ export function registerScreens() {
   Navigation.registerComponent('MedicalId', () => MedicalId);
   Navigation.registerComponent('SignUp', () => SignUp);
   Navigation.registerComponent('CreateMedicalId', () => CreateMedicalId);
+  Navigation.registerComponent('Exercises', () => Exercises);
+  Navigation.registerComponent('Archive', () => Archive);
 }

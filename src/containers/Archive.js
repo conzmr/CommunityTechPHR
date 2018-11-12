@@ -111,22 +111,8 @@ export default class Archive extends Component {
                 <Row>
                   <Text style={styles.label}>Fecha de toma de medidas</Text>
                 </Row>
-                <Row>
-                  <DatePicker
-                    style={styles.datePicker}
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1900, 1, 1)}
-                    maximumDate={new Date()}
-                    locale={"es"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText="Selecciona una fecha"
-                    textStyle={{ color: "black" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('prosthesis.measurementDate', val)}
-                    />
+                <Row style={styles.marginTop}>
+                  <Text >10/10/18</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -136,21 +122,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de entrega</Text>
                 </Row>
                 <Row>
-                  <DatePicker
-                    style={styles.datePicker}
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1900, 1, 1)}
-                    maximumDate={new Date()}
-                    locale={"es"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText="Selecciona una fecha"
-                    textStyle={{ color: "black" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('prosthesis.deliveryDate', val)}
-                    />
+                  <Text >2/11/18</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -164,21 +136,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de inicio</Text>
                 </Row>
                 <Row>
-                  <DatePicker
-                    style={styles.datePicker}
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1900, 1, 1)}
-                    maximumDate={new Date()}
-                    locale={"es"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText="Selecciona una fecha"
-                    textStyle={{ color: "black" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('preprostheticTherapy.startDate', val)}
-                    />
+                  <Text>10/11/18</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -188,21 +146,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de terminación</Text>
                 </Row>
                 <Row>
-                  <DatePicker
-                    style={styles.datePicker}
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1900, 1, 1)}
-                    maximumDate={new Date()}
-                    locale={"es"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText="Selecciona una fecha"
-                    textStyle={{ color: "black" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('preprostheticTherapy.endDate', val)}
-                    />
+                  <Text >5/12/18</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -212,10 +156,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Número de sesiones</Text>
                 </Row>
                 <Row>
-                  <Input
-                    keyboardType="numeric"
-                    textContentType="preprostheticTherapy.sessionsNumber"
-                  />
+                  <Text >6</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -229,21 +170,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de inicio</Text>
                 </Row>
                 <Row>
-                  <DatePicker
-                    style={styles.datePicker}
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1900, 1, 1)}
-                    maximumDate={new Date()}
-                    locale={"es"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText="Selecciona una fecha"
-                    textStyle={{ color: "black" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('postprostheticTherapy.startDate', val)}
-                    />
+                  <Text>3/01/19</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -253,21 +180,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de terminación</Text>
                 </Row>
                 <Row>
-                  <DatePicker
-                    style={styles.datePicker}
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1900, 1, 1)}
-                    maximumDate={new Date()}
-                    locale={"es"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText="Selecciona una fecha"
-                    textStyle={{ color: "black" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('postprostheticTherapy.endDate', val)}
-                    />
+                  <Text >22/02/19</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -277,10 +190,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Número de sesiones</Text>
                 </Row>
                 <Row>
-                  <Input
-                    keyboardType="numeric"
-                    textContentType="postprostheticTherapy.sessionsNumber"
-                  />
+                  <Text >8</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -299,6 +209,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 5,
     width: '100%'
+  },
+  marginTop:{
+    marginTop: 10
   },
   headerTitle:{
     fontSize: 30,

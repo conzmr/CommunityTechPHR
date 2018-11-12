@@ -32,10 +32,10 @@ export default class Home extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Hello from Home screen.</Text>
+        <Text>Comenzar registro</Text>
         <Button
           onPress={this.logout}
-          title="Sign Out"
+          title="Glucosa"
         />
 
       </View>

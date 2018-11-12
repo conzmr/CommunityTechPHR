@@ -45,6 +45,7 @@ export default class Exercises extends React.Component {
       });
 
     this.state = {x: 1.057373, y: 7.747573, z: 5.562713};
+    this.state = {x: 0, y: 0, z: 0};
   }
 
   render() {
@@ -84,7 +85,7 @@ export default class Exercises extends React.Component {
         }}
 
       >
-        <Text style={styles.buttonText} > Detener </Text>
+        <Text style={styles.buttonText} > Comenzar </Text>
     </Button>
         </Content>
       </Container>
@@ -123,9 +124,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 40,
-    // backgroundColor: '#00b3ae'
+    backgroundColor: '#00b3ae'
     // backgroundColor: '#229691'
-    backgroundColor: '#666'
+    // backgroundColor: '#666'
   },
   buttonText: {
     fontWeight: 'bold'

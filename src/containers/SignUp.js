@@ -31,6 +31,8 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { goHome } from '../navigation';
 import { Navigation } from 'react-native-navigation';
+import { AsyncStorage } from "react-native"
+
 
 export default class SignUp extends Component {
   static options(passProps) {
@@ -61,8 +63,11 @@ export default class SignUp extends Component {
     this.onValueChange = this.onValueChange.bind(this);
     Navigation.events().bindComponent(this);
     this.state = {
+      name: "",
       gender: undefined,
       amputationType: undefined,
+      amputationSide: undefined,
+      amputationReason: "",
       laterality: undefined,
       prevDisplacementTool: undefined,
       prevRehabilitation: false,
@@ -82,38 +87,88 @@ export default class SignUp extends Component {
         measurementDate: new Date(),
         deliveryDate: new Date()
       },
-      birthdate: new Date()
+      birthdate: new Date(),
+      weight: 0,
+      height: 0,
+      shoeSize: 0,
+      user: {
+        gender: undefined,
+        amputationType: undefined,
+        laterality: undefined,
+        prevDisplacementTool: undefined,
+        prevRehabilitation: false,
+        preprostheticTherapy: {
+          startDate: new Date(),
+          endDate: new Date()
+        },
+        postprostheticTherapy: {
+          startDate: new Date(),
+          endDate: new Date()
+        },
+        glucose: {
+          date: new Date(),
+          level: undefined
+        },
+        prosthesis: {
+          measurementDate: new Date(),
+          deliveryDate: new Date()
+        },
+        birthdate: new Date()
+      }
     };
   }
 
-  state = {
-    username: '', password: '', email: '', phone_number: ''
-  }
   onChangeText = (key, val) => {
     this.setState({ [key]: val })
   }
   onValueChange = (key, val) => {
     this.setState({ [key]: val })
   }
-  signUp = async () => {
-    const { username, password, email, phone_number } = this.state
+  // signUp = async () => {
+  //   const { user } = this.state
+  //   try {
+  //     goHome()
+  //     console.log('user successfully signed up!: ', success)
+  //   } catch (err) {
+  //     console.log('error signing up: ', err)
+  //   }
+  // }
+
+  saveUser = async () => {
+    const user = this.state;
     try {
+      console.log("SAVING");
+      console.log(user);
+      await AsyncStorage.setItem('USER', JSON.stringify(user));
       goHome()
-      console.log('user successfully signed up!: ', success)
-    } catch (err) {
-      console.log('error signing up: ', err)
+    } catch (error) {
+      console.log(error);
     }
   }
 
   navigationButtonPressed({ buttonId }) {
     Navigation.dismissModal(this.props.componentId);
     if(buttonId == "buttonSave"){
-      return this.signUp();
+      return this.saveUser();
     }
   }
 
 
   render() {
+    const {
+      gender,
+      laterality,
+      amputationType,
+      amputationSide,
+      amputationReason,
+      prevDisplacementTool,
+      prevRehabilitation,
+      preprostheticTherapy,
+      postprostheticTherapy,
+      glucose,
+      prosthesis,
+      name
+     } = this.state;
     return (
       <Container>
         <Content>
@@ -124,7 +179,11 @@ export default class SignUp extends Component {
             <ListItem >
               <Grid>
                 <Row>
-                  <Text style={styles.label}>Nombre</Text>
+                  <Text
+                  style={styles.label}
+                  onChangeText={(name) => this.onValueChange('name', name)}
+                  value={ name }
+                  >Nombre</Text>
                 </Row>
                 <Row>
                   <Input
@@ -134,7 +193,7 @@ export default class SignUp extends Component {
                 </Row>
               </Grid>
             </ListItem>
-            <ListItem >
+            <Item style={styles.itemList}>
               <Grid>
                 <Row>
                   <Text style={styles.label}>Fecha de nacimiento</Text>
@@ -156,7 +215,7 @@ export default class SignUp extends Component {
                     />
                 </Row>
               </Grid>
-            </ListItem>
+            </Item>
             <ListItem >
               <Grid>
                 <Row>
@@ -180,7 +239,7 @@ export default class SignUp extends Component {
                     placeholder="Selecciona tu género"
                     placeholderStyle={{ color: "#d3d3d3" }}
                     placeholderIconColor="#007aff"
-                    selectedValue={this.state.gender}
+                    selectedValue={ gender }
                     onValueChange={val => this.onValueChange('gender',val)}
                   >
                     <Picker.Item label="Femenino" value="Femenino" />
@@ -252,7 +311,7 @@ export default class SignUp extends Component {
                     placeholder="Selecciona"
                     placeholderStyle={{ color: "#d3d3d3" }}
                     placeholderIconColor="#007aff"
-                    selectedValue={this.state.laterality}
+                    selectedValue={ laterality }
                     onValueChange={val => this.onValueChange('laterality',val)}
                   >
                     <Picker.Item label="Zurdo" value="Zurdo" />
@@ -315,6 +374,7 @@ export default class SignUp extends Component {
                 <Row>
                   <Textarea
                     style={styles.textarea}
+                    textContentType="amputationReason"
                     rowSpan={2} />
                 </Row>
               </Grid>
@@ -343,7 +403,7 @@ export default class SignUp extends Component {
                     placeholder="Selecciona"
                     placeholderStyle={{ color: "#d3d3d3" }}
                     placeholderIconColor="#007aff"
-                    selectedValue={this.state.amputationType}
+                    selectedValue={amputationType}
                     onValueChange={val => this.onValueChange('amputationType',val)}
                   >
                     <Picker.Item label="Transfemoral" value="Transfemoral" />
@@ -376,7 +436,7 @@ export default class SignUp extends Component {
                     placeholder="Selecciona"
                     placeholderStyle={{ color: "#d3d3d3" }}
                     placeholderIconColor="#007aff"
-                    selectedValue={this.state.amputationSide}
+                    selectedValue={amputationSide}
                     onValueChange={val => this.onValueChange('amputationSide',val)}
                   >
                     <Picker.Item label="Izquierdo" value="Izquierdo" />
@@ -413,7 +473,7 @@ export default class SignUp extends Component {
                     placeholder="Selecciona"
                     placeholderStyle={{ color: "#d3d3d3" }}
                     placeholderIconColor="#007aff"
-                    selectedValue={this.state.prevDisplacementTool}
+                    selectedValue={prevDisplacementTool}
                     onValueChange={val => this.onValueChange('prevDisplacementTool',val)}
                   >
                     <Picker.Item label="Silla de ruedas" value="Silla de ruedas" />
@@ -430,7 +490,7 @@ export default class SignUp extends Component {
               </Body>
               <Switch
                 onValueChange={ value => this.onValueChange('prevRehabilitation',!this.state.prevRehabilitation)}
-                value={ this.state.prevRehabilitation}
+                value={ prevRehabilitation}
                 onTintColor= "#00b3ae"
               />
             </ListItem>
@@ -472,5 +532,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start'
+  },
+  itemList: {
+    borderColor: '#c9c9c9',
+    paddingTop: 13,
+    paddingBottom: 13,
+    paddingRight: 16,
+    borderBottomWidth: 0.5,
+    marginLeft: 16
   }
 })

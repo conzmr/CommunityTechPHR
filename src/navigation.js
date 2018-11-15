@@ -10,11 +10,11 @@ export const goHome = () =>
           children: [
             {
               component: {
-                name: 'Home',
+                name: 'AgendaRecords',
                 options: {
                   bottomTab: {
                     fontSize: 12,
-                    text: 'Inicio',
+                    text: 'Agenda',
                     icon: iconsMap['ios-heart'],
           					selectedIcon: iconsMap['ios-pulse']
                   }

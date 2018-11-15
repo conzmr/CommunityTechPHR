@@ -9,6 +9,7 @@ import Home from './containers/Home';
 import Exercises from './containers/Exercises';
 import Archive from './containers/Archive';
 import Therapies from './containers/Therapies';
+import AgendaRecords from './containers/AgendaRecords';
 
 export function registerScreens() {
   Navigation.registerComponent('Home', () => Home);
@@ -19,4 +20,5 @@ export function registerScreens() {
   Navigation.registerComponent('Exercises', () => Exercises);
   Navigation.registerComponent('Archive', () => Archive);
   Navigation.registerComponent('Therapies', () => Therapies);
+  Navigation.registerComponent('AgendaRecords', () => AgendaRecords);
 }

@@ -30,34 +30,36 @@ import {
   Footer
  } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import moment from "moment/min/moment-with-locales";
 
 export default class MedicalId extends React.Component {
   constructor(props) {
     super(props);
     Navigation.events().bindComponent(this);
+    this.state = {
+      user: {}
+    }
   }
 
   retrieveData = async () => {
   try {
     const value = await AsyncStorage.getItem('USER');
-    console.log("YAY VALUE");
-    console.log(value);
     if (value !== null) {
-      // We have data!!
       let user = JSON.parse(value);
-      console.log(user);
+      this.setState({
+        'user': user
+      })
     }
    } catch (error) {
-     // Error retrieving data
+     console.log(error);
    }
 }
 
-componentDidMount() {
+async componentDidMount() {
   try {
-    console.log("DOING THISS");
-    this.retrieveData();
+    await this.retrieveData();
   } catch (err) {
-    console.log('error: ', err)
+    console.log('Error: ', err)
   }
 }
 
@@ -79,10 +81,23 @@ componentDidMount() {
   }
 
 
-
-
-
   render() {
+      const {
+        name,
+        birthdate,
+        gender,
+        weight,
+        height,
+        shoeSize,
+        laterality,
+        glucose,
+        amputationReason,
+        amputationType,
+        amputationSide,
+        prevDisplacementTool,
+        prevRehabilitation
+      } = this.state.user;
+      console.log(this.state);
       return (
         <Container>
           <Header span style={styles.backgroundHeader}>
@@ -118,7 +133,7 @@ componentDidMount() {
                    <Text style={styles.label}>Nombre</Text>
                  </Row>
                  <Row>
-                   <Text>Carlota Padilla</Text>
+                   <Text>{name}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -128,7 +143,7 @@ componentDidMount() {
                    <Text style={styles.label}>Fecha de nacimiento</Text>
                  </Row>
                  <Row>
-                  <Text>27/11/97</Text>
+                  <Text>{birthdate && moment(birthdate).format("DD/MM/YY")}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -138,7 +153,7 @@ componentDidMount() {
                    <Text style={styles.label}>Género</Text>
                  </Row>
                  <Row>
-                   <Text>Femenino</Text>
+                   <Text>{gender}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -148,7 +163,7 @@ componentDidMount() {
                    <Text style={styles.label}>Peso (kg)</Text>
                  </Row>
                  <Row>
-                   <Text>52</Text>
+                   <Text>{weight}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -158,7 +173,7 @@ componentDidMount() {
                    <Text style={styles.label}>Estatura (cm)</Text>
                  </Row>
                  <Row>
-                   <Text>165</Text>
+                   <Text>{height}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -168,7 +183,7 @@ componentDidMount() {
                    <Text style={styles.label}>Talla de calzado (cm)</Text>
                  </Row>
                  <Row>
-                   <Text>25</Text>
+                   <Text>{shoeSize}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -178,32 +193,7 @@ componentDidMount() {
                    <Text style={styles.label}>Lateralidad</Text>
                  </Row>
                  <Row>
-                   <Text></Text>
-                 </Row>
-               </Grid>
-             </ListItem>
-
-
-             <ListItem itemHeader style={styles.divider}>
-               <Text style={styles.dividerText}>GLUCOSA</Text>
-             </ListItem>
-             <ListItem >
-               <Grid>
-                 <Row>
-                   <Text style={styles.label}>Nivel de glucosa (mg/dL)</Text>
-                 </Row>
-                 <Row>
-                    <Text></Text>
-                 </Row>
-               </Grid>
-             </ListItem>
-             <ListItem noIndent style={styles.itemPicker}>
-               <Grid>
-                 <Row>
-                   <Text style={styles.label}>Fecha de toma de glucosa</Text>
-                 </Row>
-                 <Row>
-                    <Text>01/11/18</Text>
+                   <Text>{laterality}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -217,7 +207,7 @@ componentDidMount() {
                    <Text style={styles.label}>Causa de amputación</Text>
                  </Row>
                  <Row>
-                    <Text></Text>
+                    <Text>{amputationReason}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -227,7 +217,7 @@ componentDidMount() {
                    <Text style={styles.label}>Tipo de amputación</Text>
                  </Row>
                  <Row>
-                    <Text>Transtibial</Text>
+                    <Text>{amputationType}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -237,7 +227,7 @@ componentDidMount() {
                    <Text style={styles.label}>Lado de la amputación</Text>
                  </Row>
                  <Row>
-                    <Text>Izquierdo</Text>
+                    <Text>{amputationSide}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -249,7 +239,7 @@ componentDidMount() {
                    </Text>
                  </Row>
                  <Row>
-                    <Text>Muleta</Text>
+                    <Text>{prevDisplacementTool}</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -259,7 +249,9 @@ componentDidMount() {
                    <Text style={styles.label}>Previamente he tomado rehabilitación</Text>
                  </Row>
                  <Row>
-                    <Text>Sí</Text>
+                    <Text>{
+                      prevRehabilitation ? 'Sí' : 'No'
+                    }</Text>
                  </Row>
                </Grid>
              </ListItem>
@@ -301,7 +293,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: '#00B3AE',
-    fontWeight: '500'
+    fontWeight: '500',
+    fontSize: 14
   },
   divider: {
     backgroundColor: '#F8F8F8'

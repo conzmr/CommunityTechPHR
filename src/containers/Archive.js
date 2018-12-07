@@ -31,52 +31,52 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { goHome } from '../navigation';
 import { Navigation } from 'react-native-navigation';
+import { AsyncStorage } from "react-native";
+import moment from "moment/min/moment-with-locales";
 
 export default class Archive extends Component {
   constructor(props) {
     super(props);
     Navigation.events().bindComponent(this);
     this.state = {
-      preprostheticTherapy: {
-        startDate: new Date(),
-        endDate: new Date()
-      },
-      postprostheticTherapy: {
-        startDate: new Date(),
-        endDate: new Date()
-      },
-      prosthesis: {
-        measurementDate: new Date(),
-        deliveryDate: new Date()
-      }
+      archive: {}
     };
   }
 
-  onChangeText = (key, val) => {
-    this.setState({ [key]: val })
-  }
-  onValueChange = (key, val) => {
-    this.setState({ [key]: val })
-  }
-  signUp = async () => {
-    const { username, password, email, phone_number } = this.state
-    try {
-      goHome()
-      console.log('user successfully signed up!: ', success)
-    } catch (err) {
-      console.log('error signing up: ', err)
+  retrieveData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('ARCHIVE');
+    if (value !== null) {
+      let archive = JSON.parse(value);
+      this.setState({
+        'archive': archive
+      })
     }
-  }
+   } catch (error) {
+     console.log(error);
+   }
+}
 
-  navigationButtonPressed({ buttonId }) {
-    Navigation.dismissModal(this.props.componentId);
-    if(buttonId == "buttonSave"){
-      return this.signUp();
-    }
+async componentDidMount() {
+  try {
+    await this.retrieveData();
+  } catch (err) {
+    console.log('Error: ', err)
   }
+}
 
 
   render() {
+    const {
+      preprostheticStart,
+      preprostheticEnd,
+      preprostheticSessions,
+      postprostheticStart,
+      postprostheticEnd,
+      postprostheticSessions,
+      measurementDate,
+      deliveryDate
+    } = this.state.archive;
     return (
       <Container>
         <Header span style={styles.backgroundHeader}>
@@ -112,7 +112,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de toma de medidas</Text>
                 </Row>
                 <Row style={styles.marginTop}>
-                  <Text >10/10/18</Text>
+                  <Text>{measurementDate && moment(measurementDate).format("DD/MM/YY")}</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -122,7 +122,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de entrega</Text>
                 </Row>
                 <Row>
-                  <Text >2/11/18</Text>
+                  <Text>{deliveryDate && moment(deliveryDate).format("DD/MM/YY")}</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -136,7 +136,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de inicio</Text>
                 </Row>
                 <Row>
-                  <Text>10/11/18</Text>
+                  <Text>{preprostheticStart && moment(preprostheticStart).format("DD/MM/YY")}</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -146,7 +146,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de terminación</Text>
                 </Row>
                 <Row>
-                  <Text >5/12/18</Text>
+                  <Text>{preprostheticEnd && moment(preprostheticEnd).format("DD/MM/YY")}</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -156,7 +156,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Número de sesiones</Text>
                 </Row>
                 <Row>
-                  <Text >6</Text>
+                  <Text>{preprostheticSessions}</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -170,7 +170,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de inicio</Text>
                 </Row>
                 <Row>
-                  <Text>3/01/19</Text>
+                  <Text>{postprostheticStart && moment(postprostheticStart).format("DD/MM/YY")}</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -180,7 +180,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Fecha de terminación</Text>
                 </Row>
                 <Row>
-                  <Text >22/02/19</Text>
+                  <Text>{postprostheticEnd && moment(postprostheticEnd).format("DD/MM/YY")}</Text>
                 </Row>
               </Grid>
             </ListItem>
@@ -190,7 +190,7 @@ export default class Archive extends Component {
                   <Text style={styles.label}>Número de sesiones</Text>
                 </Row>
                 <Row>
-                  <Text >8</Text>
+                  <Text>{postprostheticSessions}</Text>
                 </Row>
               </Grid>
             </ListItem>

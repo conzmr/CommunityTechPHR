@@ -31,6 +31,7 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { goHome } from '../navigation';
 import { Navigation } from 'react-native-navigation';
+import { AsyncStorage } from "react-native";
 
 export default class Therapies extends Component {
   static options(passProps) {
@@ -60,44 +61,72 @@ export default class Therapies extends Component {
     super(props);
     Navigation.events().bindComponent(this);
     this.state = {
-      preprostheticTherapy: {
-        startDate: new Date(),
-        endDate: new Date()
-      },
-      postprostheticTherapy: {
-        startDate: new Date(),
-        endDate: new Date()
-      },
-      prosthesis: {
-        measurementDate: new Date(),
-        deliveryDate: new Date()
-      }
+      archive: {}
     };
   }
 
-  onChangeText = (key, val) => {
-    this.setState({ [key]: val })
-  }
   onValueChange = (key, val) => {
     this.setState({ [key]: val })
+    this.setState(prevState => ({
+        archive: {
+            ...prevState.archive,
+            [key]: val
+        }
+    }))
   }
-  signUp = async () => {
+
+  saveArchive = async () => {
+    const { archive } = this.state;
     try {
+      await AsyncStorage.setItem('ARCHIVE', JSON.stringify(archive));
+      goHome();
       Navigation.dismissModal(this.props.componentId);
-    } catch (err) {
-      console.log('error signing up: ', err)
+    } catch (error) {
+      console.log(error);
     }
   }
+
+  retrieveData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('ARCHIVE');
+    if (value !== null) {
+      let archive = JSON.parse(value);
+      this.setState({
+        'archive': archive
+      })
+    }
+   } catch (error) {
+     console.log(error);
+   }
+}
+
+async componentDidMount() {
+  try {
+    await this.retrieveData();
+  } catch (err) {
+    console.log('Error: ', err)
+  }
+}
 
   navigationButtonPressed({ buttonId }) {
     Navigation.dismissModal(this.props.componentId);
     if(buttonId == "buttonSave"){
-      return this.signUp();
+      return this.saveArchive();
     }
   }
 
 
   render() {
+    const {
+      preprostheticStart,
+      preprostheticEnd,
+      preprostheticSessions,
+      postprostheticStart,
+      postprostheticEnd,
+      postprostheticSessions,
+      measurementDate,
+      deliveryDate
+    } = this.state.archive;
     return (
       <Container>
         <Content>
@@ -105,7 +134,7 @@ export default class Therapies extends Component {
             <ListItem itemHeader style={styles.divider}>
               <Text style={styles.dividerText}>PRÓTESIS</Text>
             </ListItem>
-            <ListItem >
+            <Item style={styles.itemList}>
               <Grid>
                 <Row>
                   <Text style={styles.label}>Fecha de toma de medidas</Text>
@@ -124,12 +153,12 @@ export default class Therapies extends Component {
                     placeHolderText="Selecciona una fecha"
                     textStyle={{ color: "black" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('prosthesis.measurementDate', val)}
+                    onDateChange={val => this.onValueChange('measurementDate', val)}
                     />
                 </Row>
               </Grid>
-            </ListItem>
-            <ListItem noIndent>
+            </Item>
+            <Item style={styles.itemList}>
               <Grid>
                 <Row>
                   <Text style={styles.label}>Fecha de entrega</Text>
@@ -148,16 +177,16 @@ export default class Therapies extends Component {
                     placeHolderText="Selecciona una fecha"
                     textStyle={{ color: "black" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('prosthesis.deliveryDate', val)}
+                    onDateChange={val => this.onValueChange('deliveryDate', val)}
                     />
                 </Row>
               </Grid>
-            </ListItem>
+            </Item>
 
             <ListItem itemHeader style={styles.divider}>
               <Text style={styles.dividerText}>TERAPIA PREPROTÉSICA</Text>
             </ListItem>
-            <ListItem >
+            <Item style={styles.itemList} >
               <Grid>
                 <Row>
                   <Text style={styles.label}>Fecha de inicio</Text>
@@ -176,12 +205,12 @@ export default class Therapies extends Component {
                     placeHolderText="Selecciona una fecha"
                     textStyle={{ color: "black" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('preprostheticTherapy.startDate', val)}
+                    onDateChange={val => this.onValueChange('preprostheticStart', val)}
                     />
                 </Row>
               </Grid>
-            </ListItem>
-            <ListItem >
+            </Item>
+            <Item style={styles.itemList} >
               <Grid>
                 <Row>
                   <Text style={styles.label}>Fecha de terminación</Text>
@@ -200,11 +229,11 @@ export default class Therapies extends Component {
                     placeHolderText="Selecciona una fecha"
                     textStyle={{ color: "black" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('preprostheticTherapy.endDate', val)}
+                    onDateChange={val => this.onValueChange('preprostheticEnd', val)}
                     />
                 </Row>
               </Grid>
-            </ListItem>
+            </Item>
             <ListItem noIndent>
               <Grid>
                 <Row>
@@ -213,7 +242,9 @@ export default class Therapies extends Component {
                 <Row>
                   <Input
                     keyboardType="numeric"
-                    textContentType="preprostheticTherapy.sessionsNumber"
+                    textContentType="preprostheticSessions"
+                    onChangeText={(value) => this.onValueChange('preprostheticSessions', value)}
+                    value={ preprostheticSessions }
                   />
                 </Row>
               </Grid>
@@ -222,7 +253,7 @@ export default class Therapies extends Component {
             <ListItem itemHeader style={styles.divider}>
               <Text style={styles.dividerText}>TERAPIA POSTPROTÉSICA</Text>
             </ListItem>
-            <ListItem >
+            <Item style={styles.itemList} >
               <Grid>
                 <Row>
                   <Text style={styles.label}>Fecha de inicio</Text>
@@ -241,12 +272,12 @@ export default class Therapies extends Component {
                     placeHolderText="Selecciona una fecha"
                     textStyle={{ color: "black" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('postprostheticTherapy.startDate', val)}
+                    onDateChange={val => this.onValueChange('postprostheticStart', val)}
                     />
                 </Row>
               </Grid>
-            </ListItem>
-            <ListItem>
+            </Item>
+            <Item style={styles.itemList}>
               <Grid>
                 <Row>
                   <Text style={styles.label}>Fecha de terminación</Text>
@@ -265,11 +296,11 @@ export default class Therapies extends Component {
                     placeHolderText="Selecciona una fecha"
                     textStyle={{ color: "black" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('postprostheticTherapy.endDate', val)}
+                    onDateChange={val => this.onValueChange('postprostheticEnd', val)}
                     />
                 </Row>
               </Grid>
-            </ListItem>
+            </Item>
             <ListItem noIndent>
               <Grid>
                 <Row>
@@ -278,7 +309,8 @@ export default class Therapies extends Component {
                 <Row>
                   <Input
                     keyboardType="numeric"
-                    textContentType="postprostheticTherapy.sessionsNumber"
+                    onChangeText={(value) => this.onValueChange('postprostheticSessions', value)}
+                    value={ postprostheticSessions }
                   />
                 </Row>
               </Grid>
@@ -321,5 +353,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start'
+  },
+  itemList: {
+    borderColor: '#c9c9c9',
+    paddingTop: 13,
+    paddingBottom: 13,
+    paddingRight: 16,
+    borderBottomWidth: 0.5,
+    marginLeft: 16
   }
 })

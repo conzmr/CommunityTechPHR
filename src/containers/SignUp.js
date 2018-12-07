@@ -63,82 +63,24 @@ export default class SignUp extends Component {
     this.onValueChange = this.onValueChange.bind(this);
     Navigation.events().bindComponent(this);
     this.state = {
-      name: "",
-      gender: undefined,
-      amputationType: undefined,
-      amputationSide: undefined,
-      amputationReason: "",
-      laterality: undefined,
-      prevDisplacementTool: undefined,
-      prevRehabilitation: false,
-      preprostheticTherapy: {
-        startDate: new Date(),
-        endDate: new Date()
-      },
-      postprostheticTherapy: {
-        startDate: new Date(),
-        endDate: new Date()
-      },
-      glucose: {
-        date: new Date(),
-        level: undefined
-      },
-      prosthesis: {
-        measurementDate: new Date(),
-        deliveryDate: new Date()
-      },
-      birthdate: new Date(),
-      weight: 0,
-      height: 0,
-      shoeSize: 0,
-      user: {
-        gender: undefined,
-        amputationType: undefined,
-        laterality: undefined,
-        prevDisplacementTool: undefined,
-        prevRehabilitation: false,
-        preprostheticTherapy: {
-          startDate: new Date(),
-          endDate: new Date()
-        },
-        postprostheticTherapy: {
-          startDate: new Date(),
-          endDate: new Date()
-        },
-        glucose: {
-          date: new Date(),
-          level: undefined
-        },
-        prosthesis: {
-          measurementDate: new Date(),
-          deliveryDate: new Date()
-        },
-        birthdate: new Date()
-      }
+      user: {}
     };
   }
 
-  onChangeText = (key, val) => {
-    this.setState({ [key]: val })
-  }
   onValueChange = (key, val) => {
     this.setState({ [key]: val })
+    this.setState(prevState => ({
+        user: {
+            ...prevState.user,
+            [key]: val
+        }
+    }))
   }
-  // signUp = async () => {
-  //   const { user } = this.state
-  //   try {
-  //     goHome()
-  //     console.log('user successfully signed up!: ', success)
-  //   } catch (err) {
-  //     console.log('error signing up: ', err)
-  //   }
-  // }
 
   saveUser = async () => {
-    const user = this.state;
+    const { user } = this.state;
     try {
-      console.log("SAVING");
-      console.log(user);
+      // console.log(user);
       await AsyncStorage.setItem('USER', JSON.stringify(user));
       goHome()
     } catch (error) {
@@ -153,22 +95,44 @@ export default class SignUp extends Component {
     }
   }
 
+  retrieveData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('USER');
+    if (value !== null) {
+      let user = JSON.parse(value);
+      this.setState({
+        'user': user
+      })
+    }
+   } catch (error) {
+     console.log(error);
+   }
+}
+
+async componentDidMount() {
+  try {
+    await this.retrieveData();
+  } catch (err) {
+    console.log('Error: ', err)
+  }
+}
 
   render() {
     const {
+      name,
+      birthdate,
       gender,
+      weight,
+      height,
+      shoeSize,
       laterality,
+      glucose,
+      amputationReason,
       amputationType,
       amputationSide,
-      amputationReason,
       prevDisplacementTool,
-      prevRehabilitation,
-      preprostheticTherapy,
-      postprostheticTherapy,
-      glucose,
-      prosthesis,
-      name
-     } = this.state;
+      prevRehabilitation
+    } = this.state.user;
     return (
       <Container>
         <Content>
@@ -181,14 +145,14 @@ export default class SignUp extends Component {
                 <Row>
                   <Text
                   style={styles.label}
-                  onChangeText={(name) => this.onValueChange('name', name)}
-                  value={ name }
                   >Nombre</Text>
                 </Row>
                 <Row>
                   <Input
                     autoCapitalize="words"
                     textContentType="name"
+                    onChangeText={(name) => this.onValueChange('name', name)}
+                    value={ name }
                    />
                 </Row>
               </Grid>
@@ -211,7 +175,7 @@ export default class SignUp extends Component {
                     placeHolderText="Selecciona una fecha"
                     textStyle={{ color: "black" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('birthdate', val)}
+                    onDateChange={val => this.onValueChange('birthdate', val)}
                     />
                 </Row>
               </Grid>
@@ -257,7 +221,8 @@ export default class SignUp extends Component {
                 <Row>
                   <Input
                     keyboardType="numeric"
-                    textContentType="weight"
+                    onChangeText={(weight) => this.onValueChange('weight', weight)}
+                    value={ weight }
                   />
                 </Row>
               </Grid>
@@ -270,7 +235,8 @@ export default class SignUp extends Component {
                 <Row>
                   <Input
                     keyboardType="numeric"
-                    textContentType="height"
+                    onChangeText={(height) => this.onValueChange('height', height)}
+                    value={ height }
                   />
                 </Row>
               </Grid>
@@ -283,7 +249,8 @@ export default class SignUp extends Component {
                 <Row>
                   <Input
                     keyboardType="numeric"
-                    textContentType="shoeSize"
+                    onChangeText={(shoeSize) => this.onValueChange('shoeSize', shoeSize)}
+                    value={ shoeSize }
                   />
                 </Row>
               </Grid>
@@ -321,48 +288,6 @@ export default class SignUp extends Component {
               </Grid>
             </ListItem>
 
-
-            <ListItem itemHeader style={styles.divider}>
-              <Text style={styles.dividerText}>GLUCOSA</Text>
-            </ListItem>
-            <ListItem >
-              <Grid>
-                <Row>
-                  <Text style={styles.label}>Nivel de glucosa (mg/dL)</Text>
-                </Row>
-                <Row>
-                  <Input
-                    keyboardType="numeric"
-                    textContentType="glucose.level"
-                  />
-                </Row>
-              </Grid>
-            </ListItem>
-            <ListItem noIndent style={styles.itemPicker}>
-              <Grid>
-                <Row>
-                  <Text style={styles.label}>Fecha de toma de glucosa</Text>
-                </Row>
-                <Row>
-                  <DatePicker
-                    style={styles.datePicker}
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1900, 1, 1)}
-                    maximumDate={new Date()}
-                    locale={"es"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText="Selecciona una fecha"
-                    textStyle={{ color: "black" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={val => this.onChangeText('glucose.date', val)}
-                    />
-                </Row>
-              </Grid>
-            </ListItem>
-
             <ListItem itemHeader style={styles.divider}>
               <Text style={styles.dividerText}>DETALLES</Text>
             </ListItem>
@@ -374,8 +299,10 @@ export default class SignUp extends Component {
                 <Row>
                   <Textarea
                     style={styles.textarea}
-                    textContentType="amputationReason"
-                    rowSpan={2} />
+                    rowSpan={2}
+                    onChangeText={(amputationReason) => this.onValueChange('amputationReason', amputationReason)}
+                    value={ amputationReason }
+                    />
                 </Row>
               </Grid>
             </ListItem>
@@ -489,8 +416,8 @@ export default class SignUp extends Component {
                 <Text style={styles.label}>Previamente he tomado rehabilitación</Text>
               </Body>
               <Switch
-                onValueChange={ value => this.onValueChange('prevRehabilitation',!this.state.prevRehabilitation)}
-                value={ prevRehabilitation}
+                onValueChange={ value => this.onValueChange('prevRehabilitation', value)}
+                value={ prevRehabilitation }
                 onTintColor= "#00b3ae"
               />
             </ListItem>

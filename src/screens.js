@@ -10,6 +10,9 @@ import Exercises from './containers/Exercises';
 import Archive from './containers/Archive';
 import Therapies from './containers/Therapies';
 import AgendaRecords from './containers/AgendaRecords';
+import GlucoseView from './containers/GlucoseView';
+import GlucoseRecord from './containers/GlucoseRecord';
+
 
 export function registerScreens() {
   Navigation.registerComponent('Home', () => Home);
@@ -20,5 +23,6 @@ export function registerScreens() {
   Navigation.registerComponent('Exercises', () => Exercises);
   Navigation.registerComponent('Archive', () => Archive);
   Navigation.registerComponent('Therapies', () => Therapies);
-  Navigation.registerComponent('AgendaRecords', () => AgendaRecords);
+  Navigation.registerComponent('AgendaRecords', () => GlucoseView);
+  Navigation.registerComponent('GlucoseRecord', () => GlucoseRecord);
 }
